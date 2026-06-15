@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ivory: #fffaf4;
+  --color-nude: #ead7c6;
+  --color-champagne: #d8b982;
+  --color-rose: #b66a72;
+  --color-sage: #6e7f67;
+  --color-cocoa: #4d342b;
+  --color-ink: #231f20;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+:root {
+  color-scheme: light;
+  background: #fffaf4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 250, 244, 0.98), rgba(247, 239, 231, 0.95)),
+    #fffaf4;
+  color: #231f20;
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: #b66a72;
+  color: #fffaf4;
+}
+
+:focus-visible {
+  outline: 3px solid #b66a72;
+  outline-offset: 4px;
+}
+
+.section-shell {
+  width: min(1120px, calc(100% - 32px));
+  margin-inline: auto;
+}
+
+.eyebrow {
+  color: #6e7f67;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.display-title {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1.04;
+}
