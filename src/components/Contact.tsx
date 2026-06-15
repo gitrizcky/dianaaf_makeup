@@ -1,7 +1,7 @@
 "use client";
 
 import type { ChangeEvent, FormEvent } from "react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { siteConfig } from "@/lib/data";
 import { buildWhatsAppLink } from "@/lib/utils";
@@ -17,13 +17,17 @@ type BookingForm = {
 const initialForm: BookingForm = {
   name: "",
   eventDate: "",
-  eventType: "Wedding Makeup",
+  eventType: "",
   location: "",
   message: "",
 };
 
+const bookingFormHash = "#booking-form";
+
 export function Contact() {
   const [form, setForm] = useState<BookingForm>(initialForm);
+  const formRef = useRef<HTMLFormElement>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
   const whatsAppMessage = useMemo(() => {
     return [
@@ -40,6 +44,60 @@ export function Contact() {
     siteConfig.whatsappNumber,
     whatsAppMessage,
   );
+
+  useEffect(() => {
+    function focusBookingName(smooth = true) {
+      formRef.current?.scrollIntoView({
+        behavior: smooth ? "smooth" : "auto",
+        block: "start",
+      });
+
+      window.setTimeout(
+        () => nameInputRef.current?.focus({ preventScroll: true }),
+        smooth ? 420 : 0,
+      );
+    }
+
+    function handleBookingAnchorClick(event: MouseEvent) {
+      if (!(event.target instanceof Element)) {
+        return;
+      }
+
+      const anchor = event.target.closest(
+        `a[href="${bookingFormHash}"]`,
+      ) as HTMLAnchorElement | null;
+
+      if (!anchor) {
+        return;
+      }
+
+      event.preventDefault();
+
+      if (window.location.hash !== bookingFormHash) {
+        window.history.pushState(null, "", bookingFormHash);
+      }
+
+      focusBookingName();
+    }
+
+    function handleHashChange() {
+      if (window.location.hash === bookingFormHash) {
+        focusBookingName(false);
+      }
+    }
+
+    document.addEventListener("click", handleBookingAnchorClick);
+    window.addEventListener("hashchange", handleHashChange);
+
+    if (window.location.hash === bookingFormHash) {
+      focusBookingName(false);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleBookingAnchorClick);
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
 
   function updateField(
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
@@ -71,9 +129,7 @@ export function Contact() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a
               className="rounded-full bg-ivory px-6 py-3.5 text-center text-sm font-bold text-cocoa transition hover:bg-champagne"
-              href={whatsAppLink}
-              rel="noopener noreferrer"
-              target="_blank"
+              href={bookingFormHash}
             >
               Book via WhatsApp
             </a>
@@ -90,8 +146,10 @@ export function Contact() {
 
         <form
           aria-label="WhatsApp booking form"
-          className="rounded-lg border border-ivory/15 bg-ivory p-5 text-cocoa shadow-[0_18px_55px_rgba(0,0,0,0.18)] sm:p-6"
+          className="scroll-mt-28 rounded-lg border border-ivory/15 bg-ivory p-5 text-cocoa shadow-[0_18px_55px_rgba(0,0,0,0.18)] sm:p-6 lg:scroll-mt-32"
+          id={bookingFormHash.slice(1)}
           onSubmit={handleSubmit}
+          ref={formRef}
         >
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="grid gap-2 text-sm font-bold" htmlFor="name">
@@ -102,6 +160,8 @@ export function Contact() {
                 name="name"
                 onChange={updateField}
                 placeholder="Your name"
+                ref={nameInputRef}
+                required
                 type="text"
                 value={form.name}
               />
@@ -117,6 +177,7 @@ export function Contact() {
                 id="eventDate"
                 name="eventDate"
                 onChange={updateField}
+                required
                 type="date"
                 value={form.eventDate}
               />
@@ -132,15 +193,19 @@ export function Contact() {
                 id="eventType"
                 name="eventType"
                 onChange={updateField}
+                required
                 value={form.eventType}
               >
-                <option>Wedding Makeup</option>
-                <option>Engagement Makeup</option>
-                <option>Graduation Makeup</option>
-                <option>Bridesmaid Makeup</option>
-                <option>Party / Event Makeup</option>
-                <option>Makeup Trial</option>
-                <option>Home Service Makeup</option>
+                <option disabled value="">
+                  Select event type
+                </option>
+                <option value="Wedding Makeup">Wedding Makeup</option>
+                <option value="Engagement Makeup">Engagement Makeup</option>
+                <option value="Graduation Makeup">Graduation Makeup</option>
+                <option value="Bridesmaid Makeup">Bridesmaid Makeup</option>
+                <option value="Party / Event Makeup">Party / Event Makeup</option>
+                <option value="Makeup Trial">Makeup Trial</option>
+                <option value="Home Service Makeup">Home Service Makeup</option>
               </select>
             </label>
 
@@ -152,6 +217,7 @@ export function Contact() {
                 name="location"
                 onChange={updateField}
                 placeholder="Serang, Cilegon, or venue"
+                required
                 type="text"
                 value={form.location}
               />
@@ -166,6 +232,7 @@ export function Contact() {
               name="message"
               onChange={updateField}
               placeholder="Tell us your makeup style, schedule, and number of people."
+              required
               value={form.message}
             />
           </label>

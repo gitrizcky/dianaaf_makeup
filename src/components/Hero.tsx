@@ -1,12 +1,8 @@
 import Image from "next/image";
 
 import { siteConfig, trustIndicators } from "@/lib/data";
-import { buildWhatsAppLink } from "@/lib/utils";
 
-const bookingLink = buildWhatsAppLink(
-  siteConfig.whatsappNumber,
-  "Halo DianaAF Makeup, saya ingin booking jadwal makeup.",
-);
+const bookingFormHref = "#booking-form";
 
 export function Hero() {
   return (
@@ -41,9 +37,7 @@ export function Hero() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a
               className="rounded-full bg-ivory px-6 py-3.5 text-center text-sm font-bold text-cocoa transition hover:bg-champagne"
-              href={bookingLink}
-              rel="noopener noreferrer"
-              target="_blank"
+              href={bookingFormHref}
             >
               Book via WhatsApp
             </a>

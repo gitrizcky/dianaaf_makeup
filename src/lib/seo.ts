@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 
 import { faqItems, services, siteConfig } from "@/lib/data";
-import { buildWhatsAppLink } from "@/lib/utils";
 
 const siteUrl = siteConfig.siteUrl.replace(/\/$/, "");
 const heroImageUrl = `${siteUrl}${siteConfig.ogImage}`;
+const bookingFormUrl = `${siteUrl}/#booking-form`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -108,11 +108,8 @@ export function getBusinessJsonLd() {
     },
     potentialAction: {
       "@type": "CommunicateAction",
-      name: "Book via WhatsApp",
-      target: buildWhatsAppLink(
-        siteConfig.whatsappNumber,
-        "Halo DianaAF Makeup, saya ingin booking jadwal makeup.",
-      ),
+      name: "Complete booking form for WhatsApp",
+      target: bookingFormUrl,
     },
   };
 }

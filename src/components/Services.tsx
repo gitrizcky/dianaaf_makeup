@@ -1,5 +1,6 @@
-import { services, siteConfig } from "@/lib/data";
-import { buildWhatsAppLink } from "@/lib/utils";
+import { services } from "@/lib/data";
+
+const bookingFormHref = "#booking-form";
 
 export function Services() {
   return (
@@ -34,9 +35,7 @@ export function Services() {
               </p>
               <a
                 className="mt-6 inline-flex rounded-full bg-cocoa px-5 py-3 text-sm font-bold text-ivory transition hover:bg-rose"
-                href={buildWhatsAppLink(siteConfig.whatsappNumber, service.message)}
-                rel="noopener noreferrer"
-                target="_blank"
+                href={bookingFormHref}
               >
                 Ask on WhatsApp
               </a>

@@ -1,10 +1,6 @@
 import { navLinks, siteConfig } from "@/lib/data";
-import { buildWhatsAppLink } from "@/lib/utils";
 
-const bookingLink = buildWhatsAppLink(
-  siteConfig.whatsappNumber,
-  "Halo DianaAF Makeup, saya ingin tanya jadwal makeup.",
-);
+const bookingFormHref = "#booking-form";
 
 export function Footer() {
   return (
@@ -38,9 +34,7 @@ export function Footer() {
           <div className="grid content-start gap-2">
             <a
               className="transition hover:text-rose"
-              href={bookingLink}
-              rel="noopener noreferrer"
-              target="_blank"
+              href={bookingFormHref}
             >
               WhatsApp Booking
             </a>

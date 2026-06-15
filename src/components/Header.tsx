@@ -2,13 +2,10 @@
 
 import { useState } from "react";
 
-import { navLinks, siteConfig } from "@/lib/data";
-import { buildWhatsAppLink, cn } from "@/lib/utils";
+import { navLinks } from "@/lib/data";
+import { cn } from "@/lib/utils";
 
-const bookingLink = buildWhatsAppLink(
-  siteConfig.whatsappNumber,
-  "Halo DianaAF Makeup, saya ingin booking jadwal makeup.",
-);
+const bookingFormHref = "#booking-form";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,9 +40,7 @@ export function Header() {
         <div className="hidden items-center gap-3 md:flex">
           <a
             className="rounded-full bg-cocoa px-5 py-3 text-sm font-bold text-ivory transition hover:bg-rose"
-            href={bookingLink}
-            rel="noopener noreferrer"
-            target="_blank"
+            href={bookingFormHref}
           >
             Book via WhatsApp
           </a>
@@ -102,10 +97,8 @@ export function Header() {
           ))}
           <a
             className="mt-2 rounded-full bg-cocoa px-5 py-3 text-center text-sm font-bold text-ivory transition hover:bg-rose"
-            href={bookingLink}
+            href={bookingFormHref}
             onClick={() => setIsOpen(false)}
-            rel="noopener noreferrer"
-            target="_blank"
           >
             Book via WhatsApp
           </a>
