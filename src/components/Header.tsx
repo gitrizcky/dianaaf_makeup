@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 
-import { navLinks } from "@/lib/data";
+import { useLanguage } from "@/components/LanguageProvider";
 import { cn } from "@/lib/utils";
 
 const bookingFormHref = "#booking-form";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const { language, t, toggleLanguage } = useLanguage();
 
   return (
     <header className="sticky top-0 z-40 border-b border-cocoa/10 bg-ivory/92 backdrop-blur-xl">
@@ -26,7 +27,7 @@ export function Header() {
         </a>
 
         <div className="hidden items-center gap-7 text-sm font-semibold text-cocoa/80 md:flex">
-          {navLinks.map((link) => (
+          {t.navLinks.map((link) => (
             <a
               className="transition hover:text-rose focus-visible:text-rose"
               href={link.href}
@@ -38,11 +39,19 @@ export function Header() {
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
+          <button
+            aria-label={`Switch language to ${t.switchTo}`}
+            className="rounded-full border border-cocoa/15 bg-white/70 px-4 py-3 text-sm font-bold text-cocoa transition hover:border-rose hover:text-rose"
+            onClick={toggleLanguage}
+            type="button"
+          >
+            {language.toUpperCase()} / {t.switchTo}
+          </button>
           <a
             className="rounded-full bg-cocoa px-5 py-3 text-sm font-bold text-ivory transition hover:bg-rose"
             href={bookingFormHref}
           >
-            Book via WhatsApp
+            {t.common.bookWhatsApp}
           </a>
         </div>
 
@@ -85,7 +94,7 @@ export function Header() {
         id="mobile-navigation"
       >
         <div className="section-shell grid gap-2 py-4">
-          {navLinks.map((link) => (
+          {t.navLinks.map((link) => (
             <a
               className="rounded-md px-2 py-3 text-base font-semibold text-cocoa transition hover:bg-white/70 hover:text-rose"
               href={link.href}
@@ -95,12 +104,20 @@ export function Header() {
               {link.label}
             </a>
           ))}
+          <button
+            aria-label={`Switch language to ${t.switchTo}`}
+            className="rounded-md px-2 py-3 text-left text-base font-semibold text-cocoa transition hover:bg-white/70 hover:text-rose"
+            onClick={toggleLanguage}
+            type="button"
+          >
+            {language.toUpperCase()} / {t.switchTo}
+          </button>
           <a
             className="mt-2 rounded-full bg-cocoa px-5 py-3 text-center text-sm font-bold text-ivory transition hover:bg-rose"
             href={bookingFormHref}
             onClick={() => setIsOpen(false)}
           >
-            Book via WhatsApp
+            {t.common.bookWhatsApp}
           </a>
         </div>
       </div>

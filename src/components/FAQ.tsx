@@ -1,23 +1,25 @@
-import { faqItems } from "@/lib/data";
+"use client";
+
+import { useLanguage } from "@/components/LanguageProvider";
 
 export function FAQ() {
+  const { t } = useLanguage();
+
   return (
     <section className="bg-white py-20 sm:py-24" id="faq">
       <div className="section-shell grid gap-10 lg:grid-cols-[0.75fr_1.25fr]">
         <div>
-          <p className="eyebrow">FAQ</p>
+          <p className="eyebrow">{t.faq.eyebrow}</p>
           <h2 className="display-title mt-3 text-4xl text-cocoa sm:text-5xl">
-            Pertanyaan yang sering diajukan.
+            {t.faq.title}
           </h2>
           <p className="mt-4 leading-7 text-cocoa/72">
-            Informasi singkat untuk membantu calon klien memahami layanan MUA
-            Serang, Wedding Makeup Cilegon, dan Jasa MUA Banten dari DianaAF
-            Makeup.
+            {t.faq.description}
           </p>
         </div>
 
         <div className="grid gap-3">
-          {faqItems.map((item) => (
+          {t.faq.items.map((item) => (
             <details
               className="group rounded-lg border border-cocoa/10 bg-ivory p-5"
               key={item.question}

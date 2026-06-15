@@ -1,27 +1,29 @@
-import { services } from "@/lib/data";
+"use client";
+
+import { useLanguage } from "@/components/LanguageProvider";
 
 const bookingFormHref = "#booking-form";
 
 export function Services() {
+  const { t } = useLanguage();
+
   return (
     <section className="bg-white py-20 sm:py-24" id="services">
       <div className="section-shell">
         <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
           <div>
-            <p className="eyebrow">Services</p>
+            <p className="eyebrow">{t.services.eyebrow}</p>
             <h2 className="display-title mt-3 text-4xl text-cocoa sm:text-5xl">
-              Clear makeup services, tailored to your event.
+              {t.services.title}
             </h2>
           </div>
           <p className="leading-7 text-cocoa/72">
-            Every booking is prepared around the event schedule, location,
-            outfit direction, and the finish you want: natural glam, elegant
-            bridal, soft romantic, or polished event makeup.
+            {t.services.description}
           </p>
         </div>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => (
+          {t.services.items.map((service) => (
             <article
               className="rounded-lg border border-cocoa/10 bg-ivory p-6 shadow-[0_16px_38px_rgba(77,52,43,0.06)]"
               key={service.title}
@@ -31,13 +33,13 @@ export function Services() {
                 {service.description}
               </p>
               <p className="mt-4 text-sm font-semibold text-sage">
-                Best for: {service.bestFor}
+                {t.services.bestFor}: {service.bestFor}
               </p>
               <a
                 className="mt-6 inline-flex rounded-full bg-cocoa px-5 py-3 text-sm font-bold text-ivory transition hover:bg-rose"
                 href={bookingFormHref}
               >
-                Ask on WhatsApp
+                {t.common.askWhatsApp}
               </a>
             </article>
           ))}

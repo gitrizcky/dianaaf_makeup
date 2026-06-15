@@ -1,6 +1,7 @@
 import type { Viewport } from "next";
 
 import "./globals.css";
+import { LanguageProvider } from "@/components/LanguageProvider";
 import { metadata } from "@/lib/seo";
 
 export { metadata };
@@ -19,7 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
-      <body>{children}</body>
+      <body>
+        <LanguageProvider>{children}</LanguageProvider>
+      </body>
     </html>
   );
 }

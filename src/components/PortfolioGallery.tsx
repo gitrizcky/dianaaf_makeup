@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   portfolioCategories,
   type PortfolioCategory,
@@ -16,6 +17,7 @@ const filters = ["All", ...portfolioCategories] as const satisfies readonly Gall
 
 export function PortfolioGallery() {
   const [activeFilter, setActiveFilter] = useState<GalleryFilter>("All");
+  const { t } = useLanguage();
 
   const visibleItems = useMemo(() => {
     if (activeFilter === "All") {
@@ -29,18 +31,17 @@ export function PortfolioGallery() {
     <section className="bg-ivory py-20 sm:py-24" id="portfolio">
       <div className="section-shell">
         <div className="max-w-2xl">
-          <p className="eyebrow">Portfolio</p>
+          <p className="eyebrow">{t.portfolio.eyebrow}</p>
           <h2 className="display-title mt-3 text-4xl text-cocoa sm:text-5xl">
-            Makeup looks for every important moment.
+            {t.portfolio.title}
           </h2>
           <p className="mt-4 leading-7 text-cocoa/72">
-            Browse elegant bridal, engagement, graduation, bridesmaid, and event
-            makeup looks created for clients across Serang, Cilegon, and Banten.
+            {t.portfolio.description}
           </p>
         </div>
 
         <div
-          aria-label="Portfolio categories"
+          aria-label={t.portfolio.categoriesLabel}
           className="mt-8 flex gap-2 overflow-x-auto pb-2"
           role="toolbar"
         >
@@ -57,13 +58,16 @@ export function PortfolioGallery() {
               onClick={() => setActiveFilter(filter)}
               type="button"
             >
-              {filter}
+              {t.portfolio.filterLabels[filter]}
             </button>
           ))}
         </div>
 
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {visibleItems.map((item) => (
+          {visibleItems.map((item) => {
+            const localizedItem = t.portfolio.items[item.id] ?? item;
+
+            return (
             <article
               className="overflow-hidden rounded-lg border border-cocoa/10 bg-white shadow-[0_18px_45px_rgba(77,52,43,0.08)]"
               key={item.id}
@@ -71,7 +75,7 @@ export function PortfolioGallery() {
               <figure>
                 <div className="relative aspect-square overflow-hidden bg-nude/30">
                   <Image
-                    alt={item.alt}
+                    alt={localizedItem.alt}
                     className="object-cover transition duration-500 hover:scale-[1.03]"
                     fill
                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
@@ -80,16 +84,17 @@ export function PortfolioGallery() {
                 </div>
                 <figcaption className="p-5">
                   <p className="text-xs font-bold uppercase text-sage">
-                    {item.category}
+                    {t.portfolio.filterLabels[item.category]}
                   </p>
                   <h3 className="mt-2 text-xl font-bold text-cocoa">
-                    {item.title}
+                    {localizedItem.title}
                   </h3>
                   <p className="mt-2 text-sm text-cocoa/68">{item.location}</p>
                 </figcaption>
               </figure>
             </article>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

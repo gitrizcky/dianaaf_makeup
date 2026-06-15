@@ -1,8 +1,13 @@
-import { navLinks, siteConfig } from "@/lib/data";
+"use client";
+
+import { useLanguage } from "@/components/LanguageProvider";
+import { siteConfig } from "@/lib/data";
 
 const bookingFormHref = "#booking-form";
 
 export function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="border-t border-cocoa/10 bg-ivory py-10">
       <div className="section-shell grid gap-8 md:grid-cols-[1fr_auto] md:items-start">
@@ -11,17 +16,16 @@ export function Footer() {
             DianaAF Makeup
           </a>
           <p className="mt-3 max-w-xl leading-7 text-cocoa/70">
-            Professional makeup artist for weddings, engagements, graduations,
-            bridesmaids, and events across Serang, Cilegon, and Banten.
+            {t.footer.description}
           </p>
           <p className="mt-4 text-sm text-cocoa/60">
-            © {new Date().getFullYear()} DianaAF Makeup. All rights reserved.
+            © {new Date().getFullYear()} DianaAF Makeup. {t.footer.rights}
           </p>
         </div>
 
         <div className="grid gap-4 text-sm font-semibold text-cocoa/75 sm:grid-cols-2 md:text-right">
           <nav aria-label="Footer navigation" className="grid gap-2">
-            {navLinks.map((link) => (
+            {t.navLinks.map((link) => (
               <a
                 className="transition hover:text-rose"
                 href={link.href}
@@ -36,7 +40,7 @@ export function Footer() {
               className="transition hover:text-rose"
               href={bookingFormHref}
             >
-              WhatsApp Booking
+              {t.footer.whatsappBooking}
             </a>
             <a
               className="transition hover:text-rose"
@@ -44,7 +48,7 @@ export function Footer() {
               rel="noopener noreferrer"
               target="_blank"
             >
-              Instagram
+              {t.footer.instagram}
             </a>
             <span>{siteConfig.addressNote}</span>
           </div>

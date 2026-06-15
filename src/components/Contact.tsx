@@ -3,6 +3,7 @@
 import type { ChangeEvent, FormEvent } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { useLanguage } from "@/components/LanguageProvider";
 import { siteConfig } from "@/lib/data";
 import { buildWhatsAppLink } from "@/lib/utils";
 
@@ -28,17 +29,22 @@ export function Contact() {
   const [form, setForm] = useState<BookingForm>(initialForm);
   const formRef = useRef<HTMLFormElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
+  const { t } = useLanguage();
 
   const whatsAppMessage = useMemo(() => {
+    const selectedEventType =
+      t.contact.eventTypes.find((eventType) => eventType.value === form.eventType)
+        ?.label || form.eventType;
+
     return [
-      "Halo DianaAF Makeup, saya ingin booking jadwal makeup.",
-      `Nama: ${form.name || "-"}`,
-      `Tanggal acara: ${form.eventDate || "-"}`,
-      `Jenis acara: ${form.eventType || "-"}`,
-      `Lokasi: ${form.location || "-"}`,
-      `Catatan: ${form.message || "-"}`,
+      t.contact.whatsappIntro,
+      `${t.contact.whatsappFields.name}: ${form.name || "-"}`,
+      `${t.contact.whatsappFields.eventDate}: ${form.eventDate || "-"}`,
+      `${t.contact.whatsappFields.eventType}: ${selectedEventType || "-"}`,
+      `${t.contact.whatsappFields.location}: ${form.location || "-"}`,
+      `${t.contact.whatsappFields.message}: ${form.message || "-"}`,
     ].join("\n");
-  }, [form]);
+  }, [form, t]);
 
   const whatsAppLink = buildWhatsAppLink(
     siteConfig.whatsappNumber,
@@ -117,13 +123,12 @@ export function Contact() {
     <section className="bg-cocoa py-20 text-ivory sm:py-24" id="contact">
       <div className="section-shell grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
         <div>
-          <p className="eyebrow text-champagne">Contact & Booking</p>
+          <p className="eyebrow text-champagne">{t.contact.eyebrow}</p>
           <h2 className="display-title mt-3 text-4xl text-ivory sm:text-5xl">
-            Share your event details and book faster.
+            {t.contact.title}
           </h2>
           <p className="mt-5 leading-8 text-ivory/78">
-            For fastest response, please include your event date, location, and
-            makeup type.
+            {t.contact.description}
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -131,7 +136,7 @@ export function Contact() {
               className="rounded-full bg-ivory px-6 py-3.5 text-center text-sm font-bold text-cocoa transition hover:bg-champagne"
               href={bookingFormHash}
             >
-              Book via WhatsApp
+              {t.common.bookWhatsApp}
             </a>
             <a
               className="rounded-full border border-ivory/35 px-6 py-3.5 text-center text-sm font-bold text-ivory transition hover:bg-ivory hover:text-cocoa"
@@ -139,13 +144,13 @@ export function Contact() {
               rel="noopener noreferrer"
               target="_blank"
             >
-              Instagram Inquiry
+              {t.contact.instagram}
             </a>
           </div>
         </div>
 
         <form
-          aria-label="WhatsApp booking form"
+          aria-label={t.contact.formAria}
           className="scroll-mt-28 rounded-lg border border-ivory/15 bg-ivory p-5 text-cocoa shadow-[0_18px_55px_rgba(0,0,0,0.18)] sm:p-6 lg:scroll-mt-32"
           id={bookingFormHash.slice(1)}
           onSubmit={handleSubmit}
@@ -153,13 +158,13 @@ export function Contact() {
         >
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="grid gap-2 text-sm font-bold" htmlFor="name">
-              Name
+              {t.contact.name}
               <input
                 className="min-h-12 rounded-md border border-cocoa/15 bg-white px-4 text-base font-normal text-ink"
                 id="name"
                 name="name"
                 onChange={updateField}
-                placeholder="Your name"
+                placeholder={t.contact.namePlaceholder}
                 ref={nameInputRef}
                 required
                 type="text"
@@ -171,7 +176,7 @@ export function Contact() {
               className="grid gap-2 text-sm font-bold"
               htmlFor="eventDate"
             >
-              Event date
+              {t.contact.eventDate}
               <input
                 className="min-h-12 rounded-md border border-cocoa/15 bg-white px-4 text-base font-normal text-ink"
                 id="eventDate"
@@ -187,7 +192,7 @@ export function Contact() {
               className="grid gap-2 text-sm font-bold"
               htmlFor="eventType"
             >
-              Event type
+              {t.contact.eventType}
               <select
                 className="min-h-12 rounded-md border border-cocoa/15 bg-white px-4 text-base font-normal text-ink"
                 id="eventType"
@@ -197,26 +202,24 @@ export function Contact() {
                 value={form.eventType}
               >
                 <option disabled value="">
-                  Select event type
+                  {t.contact.eventTypePlaceholder}
                 </option>
-                <option value="Wedding Makeup">Wedding Makeup</option>
-                <option value="Engagement Makeup">Engagement Makeup</option>
-                <option value="Graduation Makeup">Graduation Makeup</option>
-                <option value="Bridesmaid Makeup">Bridesmaid Makeup</option>
-                <option value="Party / Event Makeup">Party / Event Makeup</option>
-                <option value="Makeup Trial">Makeup Trial</option>
-                <option value="Home Service Makeup">Home Service Makeup</option>
+                {t.contact.eventTypes.map((eventType) => (
+                  <option key={eventType.value} value={eventType.value}>
+                    {eventType.label}
+                  </option>
+                ))}
               </select>
             </label>
 
             <label className="grid gap-2 text-sm font-bold" htmlFor="location">
-              Location
+              {t.contact.location}
               <input
                 className="min-h-12 rounded-md border border-cocoa/15 bg-white px-4 text-base font-normal text-ink"
                 id="location"
                 name="location"
                 onChange={updateField}
-                placeholder="Serang, Cilegon, or venue"
+                placeholder={t.contact.locationPlaceholder}
                 required
                 type="text"
                 value={form.location}
@@ -225,13 +228,13 @@ export function Contact() {
           </div>
 
           <label className="mt-4 grid gap-2 text-sm font-bold" htmlFor="message">
-            Message
+            {t.contact.message}
             <textarea
               className="min-h-32 rounded-md border border-cocoa/15 bg-white px-4 py-3 text-base font-normal text-ink"
               id="message"
               name="message"
               onChange={updateField}
-              placeholder="Tell us your makeup style, schedule, and number of people."
+              placeholder={t.contact.messagePlaceholder}
               required
               value={form.message}
             />
@@ -241,7 +244,7 @@ export function Contact() {
             className="mt-5 w-full rounded-full bg-cocoa px-6 py-3.5 text-sm font-bold text-ivory transition hover:bg-rose"
             type="submit"
           >
-            Send Booking Details via WhatsApp
+            {t.contact.submit}
           </button>
         </form>
       </div>
